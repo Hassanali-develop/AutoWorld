@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Listings - AutoWorld</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #0b132b;
+            --secondary: #5bc0be;
+            --accent: #3a506b;
+            --light: #f7f9fc;
+            --dark: #1c2541;
+            --text: #2b2d42;
+            --gradient-1: linear-gradient(135deg, #5bc0be 0%, #3aafa9 100%);
+            --gradient-2: linear-gradient(135deg, #3a506b 0%, #5bc0be 100%);
+            --gradient-3: linear-gradient(135deg, #f7f9fc 0%, #e9eef5 100%);
+            --gradient-4: linear-gradient(135deg, #2ed573 0%, #20bf6b 100%);
+            --gradient-5: linear-gradient(to right, #0b132b, #3a506b);
+            --shadow-sm: 0 2px 10px rgba(0,0,0,0.08);
+            --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            overflow-x: hidden;
+            padding-top: 80px;
+        }
+        
+        /* Professional Navigation Bar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.0) !important;
+            backdrop-filter: saturate(120%) blur(8px);
+            padding: 12px 0;
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        
+        .navbar.scrolled {
+            padding: 8px 0;
+            box-shadow: var(--shadow-md);
+            background: rgba(255, 255, 255, 0.95) !important;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+        }
+        
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-brand:hover::after {
+            width: 100%;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+            color: var(--secondary);
+            font-size: 1.6rem;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--dark) !important;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 15px !important;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::before {
+            width: 80%;
+        }
+        
+        .nav-link:hover {
+            color: var(--secondary) !important;
+        }
+        
+        .nav-link.active {
+            color: white !important;
+            background: var(--gradient-1);
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+        
+        .navbar-toggler {
+            border: none;
+            color: var(--primary);
+            background: rgba(10, 36, 99, 0.1);
+            border-radius: 5px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggler:hover {
+            background: rgba(10, 36, 99, 0.2);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2810, 36, 99, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(10, 36, 99, 0.85), rgba(10, 36, 99, 0.85)), url('img/1w.webp') no-repeat center center/cover;
+            padding: 120px 0 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 77, 77, 0.2) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            opacity: 0.9;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow-lg);
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-1);
+        }
+        
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .search-col {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .search-col select, .search-col input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+        
+        .search-col select:focus, .search-col input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.15);
+            background-color: white;
+        }
+        
+        .search-btn {
+            background: var(--gradient-1);
+            border: none;
+            padding: 14px 35px;
+            font-weight: 600;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            height: fit-content;
+            align-self: flex-end;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
+        }
+        
+        /* Filters Section */
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .filters-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-2);
+        }
+        
+        .filter-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .filter-title a {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .filter-group {
+            margin-bottom: 25px;
+        }
+        
+        .filter-group h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .filter-option {
+            background: var(--light);
+            border: 1px solid #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-option:hover {
+            background: rgba(62, 146, 204, 0.1);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .filter-option.active {
+            background: var(--gradient-1);
+            color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+        
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .price-range input {
+            flex: 1;
+            min-width: 0;
+            max-width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .price-range span {
+            white-space: nowrap;
+        }
+        
+        .price-range input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.15);
+            background-color: white;
+        }
+        
+        /* Car Listings Section */
+        .listings-section {
+            margin-bottom: 50px;
+        }
+        
+        .listings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .listings-count {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .listings-sort {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .sort-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sort-dropdown span {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .sort-dropdown select {
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .sort-dropdown select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(62, 146, 204, 0.15);
+            background-color: white;
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .view-option {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .view-option:hover {
+            background: rgba(62, 146, 204, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .view-option.active {
+            background: var(--gradient-1);
+            color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+        
+        /* Car Cards */
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .car-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .car-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .car-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .car-card:hover .car-image img {
+            transform: scale(1.08);
+        }
+        
+        .car-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gradient-1);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+        
+        .car-featured {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--gradient-4);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .car-actions {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .car-action {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            color: var(--dark);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        
+        .car-action:hover {
+            background: var(--secondary);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .car-content {
+            padding: 22px;
+        }
+        
+        .car-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .car-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+        
+        .car-detail {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .car-detail i {
+            margin-right: 6px;
+            color: var(--accent);
+        }
+        
+        .car-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 18px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .car-location {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 18px;
+        }
+        
+        .car-location i {
+            margin-right: 6px;
+            color: var(--accent);
+        }
+        
+        .car-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .car-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .car-btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+        
+        .car-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 77, 77, 0.4);
+        }
+        
+        .car-btn-outline {
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+        }
+        
+        .car-btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* Pagination */
+        .pagination-section {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .page-item {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .page-item:hover {
+            background: rgba(62, 146, 204, 0.1);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .page-item.active {
+            background: var(--gradient-1);
+            color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
+        }
+        
+        /* No Results Message */
+        .no-results {
+            text-align: center;
+            padding: 70px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .no-results i {
+            font-size: 4.5rem;
+            color: var(--accent);
+            margin-bottom: 25px;
+        }
+        
+        .no-results h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 18px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .no-results p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 35px;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 250px;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Newsletter Section */
+        .newsletter-section {
+            background: var(--gradient-5);
+            padding: 70px 0;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .newsletter-section::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .newsletter-section::after {
+            content: '';
+            position: absolute;
+            bottom: -70px;
+            left: -70px;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .newsletter-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .newsletter-content h2 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .newsletter-content p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 35px;
+            opacity: 0.9;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form input:focus {
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+        
+        .newsletter-form button {
+            background: var(--gradient-1);
+            border: none;
+            padding: 15px 30px;
+            font-weight: 600;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3);
+        }
+        
+        .newsletter-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
+        }
+        
+        /* Enhanced Footer Styles */
+        .footer {
+            background: var(--dark);
+            color: #eee;
+            font-size: 1rem;
+            border-top: 3px solid var(--secondary);
+            padding: 50px 0 20px;
+        }
+        
+        .footer h5 {
+            color: var(--secondary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .footer h6 {
+            color: #fff;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .footer p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 5px;
+        }
+        
+        .social-icons {
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+        
+        .social-icon:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+            color: #fff;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .newsletter-input::placeholder {
+            color: #ccc;
+        }
+        
+        .newsletter-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-btn:hover {
+            background: var(--primary);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 30px;
+            text-align: center;
+            color: #aaa;
+        }
+        
+        .footer-bottom a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            .search-row {
+                flex-direction: column;
+            }
+            
+            .search-col {
+                width: 100%;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+            
+            .car-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .hero-section {
+                padding: 100px 0 60px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .navbar {
+                background: rgba(255, 255, 255, 0.98) !important;
+            }
+            
+            .nav-link {
+                margin: 5px 0;
+            }
+            
+            .listings-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .car-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form input,
+            .newsletter-form button {
+                width: 100%;
+            }
+            
+            .footer .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .footer .newsletter-input {
+                border-radius: 5px;
+                margin-bottom: 10px;
+            }
+            
+            .footer .newsletter-btn {
+                border-radius: 5px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 1.9rem;
+            }
+            
+            .car-buttons {
+                flex-direction: column;
+            }
+            
+            .filter-options {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo.png" alt="mainlogo" style="height:64px;object-fit:contain;border-radius:12px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="listings.html">Car Listings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="warranty.html">Warranty</a></li>
+                    <li class="nav-item"><a class="nav-link" href="financing.html">Financing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sign.html">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content text-center">
+                <h1>Find Your Perfect Car</h1>
+                <p>Browse through our extensive collection of quality vehicles from trusted sellers</p>
+                
+                <div class="search-container">
+                    <div class="search-row">
+                        <div class="search-col">
+                            <select id="makeFilter">
+                                <option value="">All Makes</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Suzuki">Suzuki</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Ford">Ford</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Mercedes">Mercedes</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Hyundai">Hyundai</option>
+                            </select>
+                        </div>
+                        <div class="search-col">
+                            <select id="modelFilter">
+                                <option value="">All Models</option>
+                                <option value="Corolla">Corolla</option>
+                                <option value="Civic">Civic</option>
+                                <option value="Alto">Alto</option>
+                                <option value="Sunny">Sunny</option>
+                                <option value="Mustang">Mustang</option>
+                                <option value="X5">X5</option>
+                                <option value="C-Class">C-Class</option>
+                                <option value="A4">A4</option>
+                                <option value="Elantra">Elantra</option>
+                            </select>
+                        </div>
+                        <div class="search-col">
+                            <select id="yearFilter">
+                                <option value="">All Years</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                                <option value="2015">2015</option>
+                            </select>
+                        </div>
+                        <div class="search-col">
+                            <select id="cityFilter">
+                                <option value="">All Cities</option>
+                                <option value="Lahore">Lahore</option>
+                                <option value="Karachi">Karachi</option>
+                                <option value="Islamabad">Islamabad</option>
+                                <option value="Rawalpindi">Rawalpindi</option>
+                                <option value="Faisalabad">Faisalabad</option>
+                                <option value="Multan">Multan</option>
+                                <option value="Peshawar">Peshawar</option>
+                                <option value="Quetta">Quetta</option>
+                            </select>
+                        </div>
+                        <button class="search-btn" id="searchBtn">Search Cars</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Filters Sidebar -->
+            <div class="col-lg-3 col-md-4">
+                <div class="filters-section">
+                    <div class="filter-title">
+                        Filters <a href="#" id="resetFilters">Reset All</a>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h5>Price Range</h5>
+                        <div class="price-range">
+                            <input type="number" id="minPrice" placeholder="Min">
+                            <span>to</span>
+                            <input type="number" id="maxPrice" placeholder="Max">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h5>Year Range</h5>
+                        <div class="filter-options">
+                            <div class="filter-option year-filter" data-year="2023">2023</div>
+                            <div class="filter-option year-filter" data-year="2022">2022</div>
+                            <div class="filter-option year-filter" data-year="2021">2021</div>
+                            <div class="filter-option year-filter" data-year="2020">2020</div>
+                            <div class="filter-option year-filter" data-year="2019">2019</div>
+                            <div class="filter-option year-filter" data-year="2018">2018</div>
+                            <div class="filter-option year-filter" data-year="2017">2017</div>
+                            <div class="filter-option year-filter" data-year="2016">2016</div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h5>Kilometers Driven</h5>
+                        <div class="filter-options">
+                            <div class="filter-option km-filter" data-km="10000">Less than 10,000</div>
+                            <div class="filter-option km-filter" data-km="30000">10,000 - 30,000</div>
+                            <div class="filter-option km-filter" data-km="50000">30,000 - 50,000</div>
+                            <div class="filter-option km-filter" data-km="80000">50,000 - 80,000</div>
+                            <div class="filter-option km-filter" data-km="120000">80,000 - 120,000</div>
+                            <div class="filter-option km-filter" data-km="999999">More than 120,000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h5>Body Type</h5>
+                        <div class="filter-options">
+                            <div class="filter-option body-filter" data-body="Sedan">Sedan</div>
+                            <div class="filter-option body-filter" data-body="SUV">SUV</div>
+                            <div class="filter-option body-filter" data-body="Hatchback">Hatchback</div>
+                            <div class="filter-option body-filter" data-body="Coupe">Coupe</div>
+                            <div class="filter-option body-filter" data-body="Convertible">Convertible</div>
+                            <div class="filter-option body-filter" data-body="Minivan">Minivan</div>
+                            <div class="filter-option body-filter" data-body="Truck">Truck</div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h5>Transmission</h5>
+                        <div class="filter-options">
+                            <div class="filter-option transmission-filter" data-transmission="Automatic">Automatic</div>
+                            <div class="filter-option transmission-filter" data-transmission="Manual">Manual</div>
+                            <div class="filter-option transmission-filter" data-transmission="CVT">CVT</div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h5>Fuel Type</h5>
+                        <div class="filter-options">
+                            <div class="filter-option fuel-filter" data-fuel="Petrol">Petrol</div>
+                            <div class="filter-option fuel-filter" data-fuel="Diesel">Diesel</div>
+                            <div class="filter-option fuel-filter" data-fuel="Hybrid">Hybrid</div>
+                            <div class="filter-option fuel-filter" data-fuel="Electric">Electric</div>
+                            <div class="filter-option fuel-filter" data-fuel="CNG">CNG</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Car Listings -->
+            <div class="col-lg-9 col-md-8">
+                <div class="listings-section">
+                    <div class="listings-header">
+                        <div class="listings-count" id="resultsCount">Showing 1-12 of 60 results</div>
+                        <div class="listings-sort">
+                            <div class="sort-dropdown">
+                                <span>Sort by:</span>
+                                <select id="sortSelect">
+                                    <option value="relevance">Relevance</option>
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                            </div>
+                            <div class="view-options">
+                                <div class="view-option active" id="gridView">
+                                    <i class="fas fa-th"></i>
+                                </div>
+                                <div class="view-option" id="listView">
+                                    <i class="fas fa-list"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
+                    
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <i class="fas fa-car"></i>
+                        <h3>No cars found</h3>
+                        <p>Try adjusting your search criteria or filters</p>
+                        <button class="btn btn-primary" id="resetSearchBtn">Reset Search</button>
+                    </div>
+                    
+                    <div class="car-grid" id="carGrid">
+                        <!-- Cars will be loaded here by JavaScript -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination-section">
+                        <div class="pagination" id="pagination">
+                            <!-- Pagination will be loaded here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEWSLETTER SECTION -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Get the latest updates on new cars and special offers</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Your email address">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENHANCED FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5>AutoWorld</h5>
+                    <p>Your trusted partner for quality vehicles and comprehensive warranty solutions. We're committed to providing exceptional service and peace of mind for all your automotive needs.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="listings.html">Car Listings</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="warranty.html">Warranty</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6>Resources</h6>
+                    <ul class="footer-links">
+                        <li><a href="financing.html">Financing</a></li>
+                        <li><a href="compare.html">Compare</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Testimonials</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h6>Newsletter</h6>
+                    <p>Subscribe to our newsletter for the latest updates on new models, special offers, and warranty information.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 AutoWorld. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+                <p class="mt-2">Driven by passion, powered by trust.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Car database with 60 cars
+        const cars = [
+            // Toyota
+            { id: 1, make: "Toyota", model: "Corolla", year: 2023, price: 4850000, km: 12000, city: "Lahore", transmission: "Manual", fuel: "Petrol", body: "Sedan", image: "img/tota1.jpg", featured: true },
+            { id: 2, make: "Toyota", model: "Corolla", year: 2022, price: 4500000, km: 25000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/tota2.avif" },
+            { id: 3, make: "Toyota", model: "Camry", year: 2022, price: 8200000, km: 18000, city: "Islamabad", transmission: "Automatic", fuel: "Hybrid", body: "Sedan", image: "img/1.avif" },
+            { id: 4, make: "Toyota", model: "Yaris", year: 2021, price: 3250000, km: 22000, city: "Rawalpindi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/tota3.jpg" },
+            { id: 5, make: "Toyota", model: "Hilux", year: 2020, price: 7500000, km: 35000, city: "Faisalabad", transmission: "Manual", fuel: "Diesel", body: "Truck", image: "img/tota4.jpg" },
+            { id: 6, make: "Toyota", model: "Fortuner", year: 2021, price: 12500000, km: 28000, city: "Lahore", transmission: "Automatic", fuel: "Diesel", body: "SUV", image: "img/tota5.avif", featured: true },
+            
+            // Honda
+            { id: 7, make: "Honda", model: "Civic", year: 2023, price: 5200000, km: 8000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/h1.avif", featured: true },
+            { id: 8, make: "Honda", model: "Civic", year: 2022, price: 4800000, km: 15000, city: "Islamabad", transmission: "Manual", fuel: "Petrol", body: "Sedan", image: "img/h2.jpeg" },
+            { id: 9, make: "Honda", model: "City", year: 2023, price: 3950000, km: 10000, city: "Lahore", transmission: "Manual", fuel: "Petrol", body: "Sedan", image: "img/h3.jpeg" },
+            { id: 10, make: "Honda", model: "City", year: 2022, price: 3600000, km: 18000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/h4.jpeg" },
+            { id: 11, make: "Honda", model: "BR-V", year: 2021, price: 5200000, km: 25000, city: "Rawalpindi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/h5.jpeg" },
+            { id: 12, make: "Honda", model: "HR-V", year: 2020, price: 4800000, km: 32000, city: "Faisalabad", transmission: "CVT", fuel: "Petrol", body: "SUV", image: "img/h6.jpeg" },
+            
+            // Suzuki
+            { id: 13, make: "Suzuki", model: "Alto", year: 2023, price: 1550000, km: 5000, city: "Islamabad", transmission: "Manual", fuel: "Petrol", body: "Hatchback", image: "img/s1.webp", featured: true },
+            { id: 14, make: "Suzuki", model: "Alto", year: 2022, price: 1450000, km: 12000, city: "Lahore", transmission: "Manual", fuel: "Petrol", body: "Hatchback", image: "img/s2.jpeg" },
+            { id: 15, make: "Suzuki", model: "WagonR", year: 2023, price: 2200000, km: 8000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Hatchback", image: "img/s3.jpeg" },
+            { id: 16, make: "Suzuki", model: "Cultus", year: 2022, price: 2800000, km: 15000, city: "Rawalpindi", transmission: "Manual", fuel: "Petrol", body: "Hatchback", image: "img/s4.jpeg" },
+            { id: 17, make: "Suzuki", model: "Swift", year: 2021, price: 3200000, km: 22000, city: "Faisalabad", transmission: "Automatic", fuel: "Petrol", body: "Hatchback", image: "img/s5.jpeg" },
+            { id: 18, make: "Suzuki", model: "Vitara", year: 2020, price: 5200000, km: 35000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/s6.jpeg" },
+            
+            // Nissan
+            { id: 19, make: "Nissan", model: "Sunny", year: 2020, price: 2450000, km: 45000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/n1.jpeg", featured: true },
+            { id: 20, make: "Nissan", model: "Sunny", year: 2019, price: 2200000, km: 55000, city: "Islamabad", transmission: "Manual", fuel: "Petrol", body: "Sedan", image: "img/n2.jpeg" },
+            { id: 21, make: "Nissan", model: "Leaf", year: 2021, price: 7500000, km: 25000, city: "Lahore", transmission: "Automatic", fuel: "Electric", body: "Hatchback", image: "img/n3.jpeg" },
+            { id: 22, make: "Nissan", model: "Patrol", year: 2020, price: 18500000, km: 35000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/n4.jpeg" },
+            { id: 23, make: "Nissan", model: "Juke", year: 2021, price: 4200000, km: 28000, city: "Rawalpindi", transmission: "CVT", fuel: "Petrol", body: "SUV", image: "img/n5.jpeg" },
+            { id: 24, make: "Nissan", model: "X-Trail", year: 2019, price: 6800000, km: 45000, city: "Faisalabad", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/n6.jpeg" },
+            
+            // Ford
+            { id: 25, make: "Ford", model: "Mustang", year: 2022, price: 12500000, km: 15000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Coupe", image: "img/f1.jpeg", featured: true },
+            { id: 26, make: "Ford", model: "Ranger", year: 2021, price: 8500000, km: 25000, city: "Karachi", transmission: "Manual", fuel: "Diesel", body: "Truck", image: "img/f2.jpeg" },
+            { id: 27, make: "Ford", model: "Explorer", year: 2020, price: 9500000, km: 35000, city: "Islamabad", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/f3.jpeg" },
+            { id: 28, make: "Ford", model: "Fiesta", year: 2019, price: 3200000, km: 45000, city: "Rawalpindi", transmission: "Manual", fuel: "Petrol", body: "Hatchback", image: "img/f4.jpeg" },
+            { id: 29, make: "Ford", model: "Focus", year: 2020, price: 4200000, km: 38000, city: "Faisalabad", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/f5.jpeg" },
+            { id: 30, make: "Ford", model: "Edge", year: 2019, price: 7500000, km: 55000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/f6.jpeg" },
+            
+            // BMW
+            { id: 31, make: "BMW", model: "X5", year: 2022, price: 16500000, km: 18000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/b1.jpeg", featured: true },
+            { id: 33, make: "BMW", model: "5 Series", year: 2020, price: 14500000, km: 35000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/b2.jpeg" },
+            { id: 34, make: "BMW", model: "X3", year: 2021, price: 13500000, km: 28000, city: "Rawalpindi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/b3.jpeg" },
+            { id: 35, make: "BMW", model: "7 Series", year: 2019, price: 18500000, km: 45000, city: "Faisalabad", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/b4.jpeg" },
+            { id: 36, make: "BMW", model: "Z4", year: 2020, price: 15500000, km: 22000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Convertible", image: "img/b5.jpeg" },
+            
+            // Mercedes
+            { id: 37, make: "Mercedes", model: "C-Class", year: 2022, price: 14500000, km: 15000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/m1.jpeg", featured: true },
+            { id: 38, make: "Mercedes", model: "E-Class", year: 2021, price: 17500000, km: 22000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/m2.jpeg" },
+            { id: 39, make: "Mercedes", model: "S-Class", year: 2020, price: 28500000, km: 35000, city: "Islamabad", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/m3.jpeg" },
+            { id: 40, make: "Mercedes", model: "GLC", year: 2021, price: 15500000, km: 28000, city: "Rawalpindi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/m4.jpeg" },
+            { id: 41, make: "Mercedes", model: "GLE", year: 2020, price: 19500000, km: 45000, city: "Faisalabad", transmission: "Automatic", fuel: "Diesel", body: "SUV", image: "img/m5.jpeg" },
+            { id: 42, make: "Mercedes", model: "AMG GT", year: 2019, price: 22500000, km: 25000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Coupe", image: "img/m6.jpeg" },
+            
+            // Audi
+            { id: 43, make: "Audi", model: "A4", year: 2022, price: 13500000, km: 18000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/a1.jpeg", featured: true },
+            { id: 44, make: "Audi", model: "A6", year: 2021, price: 16500000, km: 25000, city: "Islamabad", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/a2.jpeg" },
+            { id: 45, make: "Audi", model: "A8", year: 2020, price: 24500000, km: 35000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/a3.jpeg" },
+            { id: 46, make: "Audi", model: "Q5", year: 2021, price: 14500000, km: 28000, city: "Rawalpindi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/a4.jpeg" },
+            { id: 47, make: "Audi", model: "Q7", year: 2020, price: 18500000, km: 45000, city: "Faisalabad", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/a5.jpeg" },
+            { id: 48, make: "Audi", model: "TT", year: 2019, price: 12500000, km: 35000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "Coupe", image: "img/a6.jpeg" },
+            
+            // Hyundai
+            { id: 49, make: "Hyundai", model: "Elantra", year: 2023, price: 4200000, km: 8000, city: "Islamabad", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/hh1.jpeg", featured: true },
+            { id: 50, make: "Hyundai", model: "Sonata", year: 2022, price: 5200000, km: 15000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/hh2.jpeg" },
+            { id: 51, make: "Hyundai", model: "Tucson", year: 2021, price: 6200000, km: 22000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/hh3.jpeg" },
+            { id: 52, make: "Hyundai", model: "Santa Fe", year: 2020, price: 7200000, km: 35000, city: "Rawalpindi", transmission: "Automatic", fuel: "Diesel", body: "SUV", image: "img/hh4.jpeg" },
+            { id: 53, make: "Hyundai", model: "Accent", year: 2021, price: 3200000, km: 25000, city: "Faisalabad", transmission: "Manual", fuel: "Petrol", body: "Sedan", image: "img/hh5.jpeg" },
+            { id: 54, make: "Hyundai", model: "i10", year: 2022, price: 2200000, km: 15000, city: "Lahore", transmission: "Manual", fuel: "Petrol", body: "Hatchback", image: "img/hh6.jpeg" },
+            
+            // Additional cars to reach 60
+            { id: 55, make: "Toyota", model: "Prius", year: 2021, price: 6800000, km: 35000, city: "Karachi", transmission: "CVT", fuel: "Hybrid", body: "Sedan", image: "img/q1.jpeg" },
+            { id: 56, make: "Honda", model: "Accord", year: 2020, price: 8500000, km: 45000, city: "Islamabad", transmission: "Automatic", fuel: "Petrol", body: "Sedan", image: "img/q2.jpeg" },
+            { id: 57, make: "Suzuki", model: "Bolan", year: 2021, price: 1800000, km: 25000, city: "Faisalabad", transmission: "Manual", fuel: "CNG", body: "Minivan", image: "img/q3.jpeg" },
+            { id: 58, make: "Nissan", model: "Tiida", year: 2019, price: 2800000, km: 55000, city: "Lahore", transmission: "Automatic", fuel: "Petrol", body: "Hatchback", image: "img/q4.jpeg" },
+            { id: 59, make: "Ford", model: "EcoSport", year: 2020, price: 5200000, km: 35000, city: "Karachi", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/q5.jpeg" },
+            { id: 60, make: "Hyundai", model: "Creta", year: 2022, price: 4800000, km: 18000, city: "Islamabad", transmission: "Automatic", fuel: "Petrol", body: "SUV", image: "img/q6.jpeg" }
+        ];
+
+        // Global variables
+        let filteredCars = [...cars];
+        let currentPage = 1;
+        const carsPerPage = 12;
+        let currentFilters = {
+            make: '',
+            model: '',
+            year: '',
+            city: '',
+            minPrice: '',
+            maxPrice: '',
+            yearRange: [],
+            kmRange: '',
+            body: '',
+            transmission: '',
+            fuel: ''
+        };
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+            
+            // Check for URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const makeParam = urlParams.get('make');
+            const modelParam = urlParams.get('model');
+            const priceParam = urlParams.get('price');
+            
+            if (makeParam) {
+                document.getElementById('makeFilter').value = makeParam;
+                currentFilters.make = makeParam;
+            }
+            
+            if (modelParam) {
+                document.getElementById('modelFilter').value = modelParam;
+                currentFilters.model = modelParam;
+            }
+            
+            // Map simple price ranges from homepage to numeric filters
+            if (priceParam) {
+                const map = {
+                    'Under $10,000': { max: 10000 },
+                    '$10,000 - $20,000': { min: 10000, max: 20000 },
+                    '$20,000 - $30,000': { min: 20000, max: 30000 },
+                    '$30,000 - $50,000': { min: 30000, max: 50000 },
+                    'Over $50,000': { min: 50000 }
+                };
+                const rng = map[priceParam];
+                if (rng) {
+                    if (rng.min) document.getElementById('minPrice').value = rng.min * 100; // convert to PKR approx scale? kept minimal
+                    if (rng.max) document.getElementById('maxPrice').value = rng.max * 100;
+                    currentFilters.minPrice = document.getElementById('minPrice').value;
+                    currentFilters.maxPrice = document.getElementById('maxPrice').value;
+                }
+            }
+            
+            // Apply initial filters if any
+            if (makeParam || modelParam || priceParam) {
+                applyFilters();
+            } else {
+                renderCars();
+            }
+            // Cache cars for seller page access
+            try { localStorage.setItem('aw_cars_cache', JSON.stringify(cars)); } catch(e) {}
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search button
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                applyFilters();
+            });
+            
+            // Filter dropdowns
+            document.getElementById('makeFilter').addEventListener('change', function() {
+                currentFilters.make = this.value;
+                applyFilters();
+            });
+            
+            document.getElementById('modelFilter').addEventListener('change', function() {
+                currentFilters.model = this.value;
+                applyFilters();
+            });
+            
+            document.getElementById('yearFilter').addEventListener('change', function() {
+                currentFilters.year = this.value;
+                applyFilters();
+            });
+            
+            document.getElementById('cityFilter').addEventListener('change', function() {
+                currentFilters.city = this.value;
+                applyFilters();
+            });
+            
+            // Price range inputs
+            document.getElementById('minPrice').addEventListener('input', function() {
+                currentFilters.minPrice = this.value;
+                applyFilters();
+            });
+            
+            document.getElementById('maxPrice').addEventListener('input', function() {
+                currentFilters.maxPrice = this.value;
+                applyFilters();
+            });
+            
+            // Filter options
+            document.querySelectorAll('.year-filter').forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const year = parseInt(this.dataset.year);
+                    
+                    if (this.classList.contains('active')) {
+                        if (!currentFilters.yearRange.includes(year)) {
+                            currentFilters.yearRange.push(year);
+                        }
+                    } else {
+                        currentFilters.yearRange = currentFilters.yearRange.filter(y => y !== year);
+                    }
+                    
+                    applyFilters();
+                });
+            });
+            
+            document.querySelectorAll('.km-filter').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.km-filter').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilters.kmRange = this.dataset.km;
+                    applyFilters();
+                });
+            });
+            
+            document.querySelectorAll('.body-filter').forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    if (this.classList.contains('active')) {
+                        if (!currentFilters.body) {
+                            currentFilters.body = this.dataset.body;
+                        } else {
+                            currentFilters.body = '';
+                        }
+                    } else {
+                        currentFilters.body = '';
+                    }
+                    
+                    applyFilters();
+                });
+            });
+            
+            document.querySelectorAll('.transmission-filter').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.transmission-filter').forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilters.transmission = this.dataset.transmission;
+                    applyFilters();
+                });
+            });
+            
+            document.querySelectorAll('.fuel-filter').forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    
+                    if (this.classList.contains('active')) {
+                        if (!currentFilters.fuel) {
+                            currentFilters.fuel = this.dataset.fuel;
+                        } else {
+                            currentFilters.fuel = '';
+                        }
+                    } else {
+                        currentFilters.fuel = '';
+                    }
+                    
+                    applyFilters();
+                });
+            });
+            
+            // Reset filters
+            document.getElementById('resetFilters').addEventListener('click', function(e) {
+                e.preventDefault();
+                resetFilters();
+            });
+            
+            document.getElementById('resetSearchBtn').addEventListener('click', function() {
+                resetFilters();
+            });
+            
+            // Sort dropdown
+            document.getElementById('sortSelect').addEventListener('change', function() {
+                sortCars(this.value);
+            });
+            
+            // View options
+            document.getElementById('gridView').addEventListener('click', function() {
+                document.querySelectorAll('.view-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('carGrid').classList.remove('list-view');
+            });
+            
+            document.getElementById('listView').addEventListener('click', function() {
+                document.querySelectorAll('.view-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('carGrid').classList.add('list-view');
+            });
+            
+            // Newsletter form
+            document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                
+                if (email) {
+                    // Create a modern notification instead of alert
+                    showNotification('Thank you for subscribing with email: ' + email, 'success');
+                    this.querySelector('input[type="email"]').value = '';
+                }
+            });
+            
+            // Footer newsletter form
+            document.querySelector('.footer .newsletter-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('.newsletter-input').value;
+                
+                if (email) {
+                    showNotification('Thank you for subscribing to our newsletter with email: ' + email, 'success');
+                    this.querySelector('.newsletter-input').value = '';
+                }
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'flex';
+            document.getElementById('carGrid').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                filteredCars = cars.filter(car => {
+                    // Make filter
+                    if (currentFilters.make && car.make !== currentFilters.make) {
+                        return false;
+                    }
+                    
+                    // Model filter
+                    if (currentFilters.model && car.model !== currentFilters.model) {
+                        return false;
+                    }
+                    
+                    // Year filter
+                    if (currentFilters.year && car.year.toString() !== currentFilters.year) {
+                        return false;
+                    }
+                    
+                    // City filter
+                    if (currentFilters.city && car.city !== currentFilters.city) {
+                        return false;
+                    }
+                    
+                    // Price range filter
+                    if (currentFilters.minPrice && car.price < parseInt(currentFilters.minPrice)) {
+                        return false;
+                    }
+                    
+                    if (currentFilters.maxPrice && car.price > parseInt(currentFilters.maxPrice)) {
+                        return false;
+                    }
+                    
+                    // Year range filter
+                    if (currentFilters.yearRange.length > 0 && !currentFilters.yearRange.includes(car.year)) {
+                        return false;
+                    }
+                    
+                    // Kilometers filter
+                    if (currentFilters.kmRange) {
+                        const maxKm = parseInt(currentFilters.kmRange);
+                        if (car.km > maxKm) {
+                            return false;
+                        }
+                    }
+                    
+                    // Body type filter
+                    if (currentFilters.body && car.body !== currentFilters.body) {
+                        return false;
+                    }
+                    
+                    // Transmission filter
+                    if (currentFilters.transmission && car.transmission !== currentFilters.transmission) {
+                        return false;
+                    }
+                    
+                    // Fuel type filter
+                    if (currentFilters.fuel && car.fuel !== currentFilters.fuel) {
+                        return false;
+                    }
+                    
+                    return true;
+                });
+                
+                // Reset to first page
+                currentPage = 1;
+                
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                // Render cars
+                renderCars();
+            }, 500);
+        }
+
+        // Reset filters
+        function resetFilters() {
+            // Reset filter values
+            currentFilters = {
+                make: '',
+                model: '',
+                year: '',
+                city: '',
+                minPrice: '',
+                maxPrice: '',
+                yearRange: [],
+                kmRange: '',
+                body: '',
+                transmission: '',
+                fuel: ''
+            };
+            
+            // Reset form elements
+            document.getElementById('makeFilter').value = '';
+            document.getElementById('modelFilter').value = '';
+            document.getElementById('yearFilter').value = '';
+            document.getElementById('cityFilter').value = '';
+            document.getElementById('minPrice').value = '';
+            document.getElementById('maxPrice').value = '';
+            document.getElementById('sortSelect').value = 'relevance';
+            
+            // Reset filter options
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            // Reset filtered cars
+            filteredCars = [...cars];
+            currentPage = 1;
+            
+            // Render cars
+            renderCars();
+        }
+
+        // Sort cars
+        function sortCars(sortBy) {
+            switch(sortBy) {
+                case 'price-low':
+                    filteredCars.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredCars.sort((a, b) => b.price - a.price);
+                    break;
+                case 'newest':
+                    filteredCars.sort((a, b) => b.year - a.year || b.id - a.id);
+                    break;
+                case 'oldest':
+                    filteredCars.sort((a, b) => a.year - b.year || a.id - b.id);
+                    break;
+                default:
+                    // Relevance - reset to original order
+                    filteredCars = [...cars].filter(car => {
+                        // Re-apply current filters
+                        return applyCurrentFilters(car);
+                    });
+            }
+            
+            // Reset to first page
+            currentPage = 1;
+            
+            // Render cars
+            renderCars();
+        }
+
+        // Apply current filters (for sorting)
+        function applyCurrentFilters(car) {
+            // Make filter
+            if (currentFilters.make && car.make !== currentFilters.make) {
+                return false;
+            }
+            
+            // Model filter
+            if (currentFilters.model && car.model !== currentFilters.model) {
+                return false;
+            }
+            
+            // Year filter
+            if (currentFilters.year && car.year.toString() !== currentFilters.year) {
+                return false;
+            }
+            
+            // City filter
+            if (currentFilters.city && car.city !== currentFilters.city) {
+                return false;
+            }
+            
+            // Price range filter
+            if (currentFilters.minPrice && car.price < parseInt(currentFilters.minPrice)) {
+                return false;
+            }
+            
+            if (currentFilters.maxPrice && car.price > parseInt(currentFilters.maxPrice)) {
+                return false;
+            }
+            
+            // Year range filter
+            if (currentFilters.yearRange.length > 0 && !currentFilters.yearRange.includes(car.year)) {
+                return false;
+            }
+            
+            // Kilometers filter
+            if (currentFilters.kmRange) {
+                const maxKm = parseInt(currentFilters.kmRange);
+                if (car.km > maxKm) {
+                    return false;
+                }
+            }
+            
+            // Body type filter
+            if (currentFilters.body && car.body !== currentFilters.body) {
+                return false;
+            }
+            
+            // Transmission filter
+            if (currentFilters.transmission && car.transmission !== currentFilters.transmission) {
+                return false;
+            }
+            
+            // Fuel type filter
+            if (currentFilters.fuel && car.fuel !== currentFilters.fuel) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Render cars
+        function renderCars() {
+            const carGrid = document.getElementById('carGrid');
+            const noResults = document.getElementById('noResults');
+            
+            // Clear current cars
+            carGrid.innerHTML = '';
+            
+            // Check if there are results
+            if (filteredCars.length === 0) {
+                carGrid.style.display = 'none';
+                noResults.style.display = 'block';
+                document.getElementById('resultsCount').textContent = 'No results found';
+                return;
+            }
+            
+            // Show car grid
+            carGrid.style.display = 'grid';
+            noResults.style.display = 'none';
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+            const startIndex = (currentPage - 1) * carsPerPage;
+            const endIndex = Math.min(startIndex + carsPerPage, filteredCars.length);
+            const carsToShow = filteredCars.slice(startIndex, endIndex);
+            
+            // Update results count
+            document.getElementById('resultsCount').textContent = 
+                `Showing ${startIndex + 1}-${endIndex} of ${filteredCars.length} results`;
+            
+            // Render cars
+            carsToShow.forEach(car => {
+                const carCard = document.createElement('div');
+                carCard.className = 'car-card';
+                carCard.setAttribute('data-car-id', car.id);
+                
+                carCard.innerHTML = `
+                    <div class="car-image">
+                        <img src="${car.image}" alt="${car.make} ${car.model}">
+                        ${car.featured ? '<div class="car-featured">Featured</div>' : ''}
+                        <div class="car-actions">
+                            <div class="car-action" onclick="event.stopPropagation(); toggleFavorite(${car.id})">
+                                <i class="far fa-heart"></i>
+                            </div>
+                            <div class="car-action" onclick="event.stopPropagation(); shareCar(${car.id})">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="car-content">
+                        <h3 class="car-title">${car.make} ${car.model} ${car.year}</h3>
+                        <div class="car-details">
+                            <div class="car-detail">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span>${car.km.toLocaleString()} km</span>
+                            </div>
+                            <div class="car-detail">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>${car.fuel}</span>
+                            </div>
+                            <div class="car-detail">
+                                <i class="fas fa-cogs"></i>
+                                <span>${car.transmission}</span>
+                            </div>
+                        </div>
+                        <div class="car-price">PKR ${car.price.toLocaleString()}</div>
+                        <div class="car-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${car.city}</span>
+                        </div>
+                        <div class="car-buttons">
+                            <button class="car-btn car-btn-primary" onclick="event.stopPropagation(); viewCarDetails(${car.id})">View Details</button>
+                            <a class="car-btn car-btn-outline" href="seller.html?id=${car.id}" onclick="event.stopPropagation();">Contact Seller</a>
+                        </div>
+                    </div>
+                `;
+                carGrid.appendChild(carCard);
+            });
+            
+            // Add click event to car cards
+            document.querySelectorAll('.car-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const carId = this.getAttribute('data-car-id');
+                    window.location.href = `car-details.html?id=${carId}`;
+                });
+            });
+            
+            // Render pagination
+            renderPagination();
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            const totalPages = Math.ceil(filteredCars.length / carsPerPage);
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('div');
+            prevBtn.className = 'page-item';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCars();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            pagination.appendChild(prevBtn);
+            
+            // Page numbers
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            
+            if (endPage - startPage + 1 < maxVisiblePages) {
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageItem = document.createElement('div');
+                pageItem.className = 'page-item' + (i === currentPage ? ' active' : '');
+                pageItem.textContent = i;
+                pageItem.addEventListener('click', function() {
+                    currentPage = i;
+                    renderCars();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                pagination.appendChild(pageItem);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('div');
+            nextBtn.className = 'page-item';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCars();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // View car details
+        function viewCarDetails(carId) {
+            // Navigate to the car details page with the car ID as a parameter
+            window.location.href = `car-details.html?id=${carId}`;
+        }
+
+        // Toggle favorite
+        function toggleFavorite(carId) {
+            const car = cars.find(c => c.id === carId);
+            const icon = event.currentTarget.querySelector('i');
+            
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                event.currentTarget.style.background = 'var(--secondary)';
+                event.currentTarget.style.color = 'white';
+                showNotification(`${car.make} ${car.model} added to favorites!`, 'success');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                event.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+                event.currentTarget.style.color = 'var(--dark)';
+                showNotification(`${car.make} ${car.model} removed from favorites`, 'info');
+            }
+        }
+
+        // Share car
+        function shareCar(carId) {
+            const car = cars.find(c => c.id === carId);
+            if (navigator.share) {
+                navigator.share({
+                    title: `${car.make} ${car.model} ${car.year}`,
+                    text: `Check out this ${car.make} ${car.model} for PKR ${car.price.toLocaleString()}`,
+                    url: window.location.href
+                });
+            } else {
+                showNotification('Share functionality would open here', 'info');
+            }
+        }
+
+        // Contact seller
+        function contactSeller(carId) {
+            window.location.href = `seller.html?id=${carId}`;
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <div class="notification-icon">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+                    </div>
+                    <div class="notification-message">${message.replace(/\n/g, '<br>')}</div>
+                    <div class="notification-close">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            `;
+            
+            // Add notification styles
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    .notification {
+                        position: fixed;
+                        top: 100px;
+                        right: 20px;
+                        background: white;
+                        border-radius: 10px;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                        padding: 0;
+                        z-index: 9999;
+                        min-width: 300px;
+                        max-width: 500px;
+                        transform: translateX(120%);
+                        transition: transform 0.4s ease;
+                    }
+                    
+                    .notification.show {
+                        transform: translateX(0);
+                    }
+                    
+                    .notification-content {
+                        display: flex;
+                        align-items: flex-start;
+                        padding: 16px;
+                    }
+                    
+                    .notification-icon {
+                        margin-right: 12px;
+                        font-size: 1.5rem;
+                    }
+                    
+                    .notification-success .notification-icon {
+                        color: var(--gradient-4);
+                    }
+                    
+                    .notification-info .notification-icon {
+                        color: var(--accent);
+                    }
+                    
+                    .notification-message {
+                        flex: 1;
+                        font-size: 0.95rem;
+                        line-height: 1.4;
+                    }
+                    
+                    .notification-close {
+                        margin-left: 12px;
+                        cursor: pointer;
+                        color: #999;
+                        transition: color 0.2s;
+                    }
+                    
+                    .notification-close:hover {
+                        color: var(--dark);
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Add to DOM
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Close on click
+            notification.querySelector('.notification-close').addEventListener('click', function() {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 400);
+            });
+            
+            // Auto close after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 400);
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
